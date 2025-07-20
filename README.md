@@ -17,3 +17,5 @@
 #### So, if i change the structure, i will announce it!
 
 ### 1-st Changes is Calculator with Addition and Subtraction functions.
+
+### 2-nd Changes is CartService with CreateCart, GetCartById, and AddToCart functions with jmoiron/sqlx tools for working with DB!
