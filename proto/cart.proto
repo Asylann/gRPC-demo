@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "./proto;calculatorpb";
+
+service CartService {
+  rpc CreateCart(CreateCartRequest) returns (CreateCartResponse) {}
+  rpc AddToCart(AddToCardRequest) returns (AddToCardResponse) {}
+  rpc GetCartById(GetCartByIdRequest) returns (GetCartByIdResponse) {}
+}
+
+message GetCartByIdRequest {
+  int32 id = 1;
+}
+
+message GetCartByIdResponse {
+  Cart cart = 1;
+}
+
+message Cart {
+  int32 id =1;
+  int32 user_id = 2;
+}
+
+message CreateCartRequest {
+  int32 user_id = 1;
+}
+
+message CreateCartResponse {
+  bool is_created = 1;
+}
+
+message AddToCardRequest {
+  Cart_Item item = 1;
+}
+message AddToCardResponse {
+  bool is_added = 1;
+}
+
+message Cart_Item {
+  int32 cart_id = 1;
+  Product product = 2;
+}
+
+message Product {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int64 size = 5;
+  int32 category_id = 6;
+  string image_url = 7;
+  int32  seller_id = 8;
+}
