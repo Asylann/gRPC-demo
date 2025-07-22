@@ -25,19 +25,13 @@ func (s *Server) CreateCart(ctx context.Context, req *pb.CreateCartRequest) (*pb
 		log.Println(err.Error())
 		return nil, err
 	}
+	log.Printf("Cart was created by user id = %v \n", req.UserId)
 	return &pb.CreateCartResponse{IsCreated: true}, nil
 }
 
 func (s *Server) AddToCart(ctx context.Context, req *pb.AddToCardRequest) (*pb.AddToCardResponse, error) {
 	product := models.Product{
-		ID:          int(req.GetItem().Product.Id),
-		Name:        req.GetItem().Product.Name,
-		Description: req.GetItem().Product.Description,
-		Price:       req.GetItem().Product.Price,
-		Size:        int(req.GetItem().Product.Size),
-		CategoryID:  int(req.GetItem().Product.CategoryId),
-		ImageURL:    req.GetItem().Product.ImageUrl,
-		SellerID:    int(req.GetItem().Product.SellerId),
+		ID: int(req.GetItem().Product.Id),
 	}
 	log.Println(product)
 	err := s.CartStore.AddToCart(int(req.GetItem().CartId), product)
@@ -48,13 +42,37 @@ func (s *Server) AddToCart(ctx context.Context, req *pb.AddToCardRequest) (*pb.A
 	return &pb.AddToCardResponse{IsAdded: true}, nil
 }
 
-func (s *Server) GetCartById(ctx context.Context, req *pb.GetCartByIdRequest) (*pb.GetCartByIdResponse, error) {
-	cart, err := s.CartStore.GetCartById(int(req.GetId()))
+func (s *Server) GetCartByUserId(ctx context.Context, req *pb.GetCartByUserIdRequest) (*pb.GetCartByUserIdResponse, error) {
+	cart, err := s.CartStore.GetCartByUserId(int(req.GetId()))
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err
 	}
-	return &pb.GetCartByIdResponse{Cart: &pb.Cart{Id: int32(cart.Id), UserId: int32(cart.User_id)}}, nil
+	return &pb.GetCartByUserIdResponse{Cart: &pb.Cart{Id: int32(cart.Id), UserId: int32(cart.User_id)}}, nil
+}
+
+func (s *Server) GetItemsOfCartById(ctx context.Context, req *pb.GetItemsOfCartByIdRequest) (*pb.GetItemsOfCartByIdResponse, error) {
+	products, err := s.CartStore.GetProductsOfCartById(int(req.GetId()))
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	resProducts := []*pb.Product{}
+	for i := 0; i < len(products); i++ {
+		resProducts = append(resProducts, &pb.Product{Id: int32(products[i])})
+	}
+	return &pb.GetItemsOfCartByIdResponse{Product: resProducts}, nil
+}
+
+func (s *Server) DeleteItemFromCart(ctx context.Context, req *pb.DeleteItemFromCartRequest) (*pb.DeleteItemFromCartResponse, error) {
+	err := s.CartStore.DeleteItemFromCart(int(req.GetCartId()), int(req.GetProductId()))
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return &pb.DeleteItemFromCartResponse{DeletedProduct: &pb.Product{Id: req.ProductId}}, nil
 }
 
 func main() {
@@ -62,14 +80,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	db := repository.InitDB(cfg)
+	repository.InitDB(cfg)
 
 	l, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	cartStore, err := repository.NewCartStore(db)
+	cartStore, err := repository.NewCartStore()
 	if err != nil {
 		log.Fatal(err.Error())
 	}

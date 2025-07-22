@@ -7,14 +7,33 @@ option go_package = "./proto;calculatorpb";
 service CartService {
   rpc CreateCart(CreateCartRequest) returns (CreateCartResponse) {}
   rpc AddToCart(AddToCardRequest) returns (AddToCardResponse) {}
-  rpc GetCartById(GetCartByIdRequest) returns (GetCartByIdResponse) {}
+  rpc GetCartByUserId(GetCartByUserIdRequest) returns (GetCartByUserIdResponse) {}
+  rpc GetItemsOfCartById(GetItemsOfCartByIdRequest) returns (GetItemsOfCartByIdResponse) {}
+  rpc DeleteItemFromCart(DeleteItemFromCartRequest) returns (DeleteItemFromCartResponse) {}
 }
 
-message GetCartByIdRequest {
+message DeleteItemFromCartRequest {
+  int32 cart_id = 1;
+  int32 product_id = 2;
+}
+
+message DeleteItemFromCartResponse {
+  Product deletedProduct = 1;
+}
+
+message GetItemsOfCartByIdRequest {
   int32 id = 1;
 }
 
-message GetCartByIdResponse {
+message GetItemsOfCartByIdResponse {
+  repeated Product product = 1;
+}
+
+message GetCartByUserIdRequest {
+  int32 id = 1;
+}
+
+message GetCartByUserIdResponse {
   Cart cart = 1;
 }
 
@@ -45,11 +64,4 @@ message Cart_Item {
 
 message Product {
   int32 id = 1;
-  string name = 2;
-  string description = 3;
-  double price = 4;
-  int64 size = 5;
-  int32 category_id = 6;
-  string image_url = 7;
-  int32  seller_id = 8;
 }
