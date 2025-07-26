@@ -10,6 +10,53 @@ service CartService {
   rpc GetCartByUserId(GetCartByUserIdRequest) returns (GetCartByUserIdResponse) {}
   rpc GetItemsOfCartById(GetItemsOfCartByIdRequest) returns (GetItemsOfCartByIdResponse) {}
   rpc DeleteItemFromCart(DeleteItemFromCartRequest) returns (DeleteItemFromCartResponse) {}
+  rpc GetEtagVersionByUserId(GetEtagVersionByUserIdRequest) returns (GetEtagVersionByUserIdResponse) {}
+  rpc ChangeEtagVersionByUserId(ChangeEtagVersionByUserIdRequest) returns (ChangeEtagVersionByUserIdResponse) {}
+  rpc DeleteCart(DeleteCartRequest) returns (DeleteCartResponse) {}
+  rpc DeleteProductOfCarts(DeleteProductOfCartsRequest) returns (DeleteProductOfCartsResponse) {}
+  rpc ChangeEtagVersionOfCartsByProductId(ChangeEtagVersionOfCartsByProductIdRequest) returns (ChangeEtagVersionOfCartsByProductIdResponse) {}
+}
+
+message ChangeEtagVersionOfCartsByProductIdRequest {
+  int64 product_id = 1;
+}
+
+message ChangeEtagVersionOfCartsByProductIdResponse {
+  bool is_changed = 1;
+}
+
+message DeleteProductOfCartsRequest {
+  int64 product_id = 1;
+}
+
+message DeleteProductOfCartsResponse {
+  int64 product_id = 1;
+}
+
+message DeleteCartRequest {
+  int32 user_id = 1;
+}
+
+message DeleteCartResponse {
+  Cart deleted_cart = 2;
+}
+
+
+message ChangeEtagVersionByUserIdRequest {
+  int32 user_id = 1;
+}
+
+message ChangeEtagVersionByUserIdResponse {
+  bool is_changed = 1;
+  int64 changed_version = 2;
+}
+
+message GetEtagVersionByUserIdRequest {
+  int32 user_id = 1;
+}
+
+message GetEtagVersionByUserIdResponse {
+  int64 version =1;
 }
 
 message DeleteItemFromCartRequest {

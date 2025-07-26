@@ -19,11 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CartService_CreateCart_FullMethodName         = "/proto.CartService/CreateCart"
-	CartService_AddToCart_FullMethodName          = "/proto.CartService/AddToCart"
-	CartService_GetCartByUserId_FullMethodName    = "/proto.CartService/GetCartByUserId"
-	CartService_GetItemsOfCartById_FullMethodName = "/proto.CartService/GetItemsOfCartById"
-	CartService_DeleteItemFromCart_FullMethodName = "/proto.CartService/DeleteItemFromCart"
+	CartService_CreateCart_FullMethodName                          = "/proto.CartService/CreateCart"
+	CartService_AddToCart_FullMethodName                           = "/proto.CartService/AddToCart"
+	CartService_GetCartByUserId_FullMethodName                     = "/proto.CartService/GetCartByUserId"
+	CartService_GetItemsOfCartById_FullMethodName                  = "/proto.CartService/GetItemsOfCartById"
+	CartService_DeleteItemFromCart_FullMethodName                  = "/proto.CartService/DeleteItemFromCart"
+	CartService_GetEtagVersionByUserId_FullMethodName              = "/proto.CartService/GetEtagVersionByUserId"
+	CartService_ChangeEtagVersionByUserId_FullMethodName           = "/proto.CartService/ChangeEtagVersionByUserId"
+	CartService_DeleteCart_FullMethodName                          = "/proto.CartService/DeleteCart"
+	CartService_DeleteProductOfCarts_FullMethodName                = "/proto.CartService/DeleteProductOfCarts"
+	CartService_ChangeEtagVersionOfCartsByProductId_FullMethodName = "/proto.CartService/ChangeEtagVersionOfCartsByProductId"
 )
 
 // CartServiceClient is the client API for CartService service.
@@ -35,6 +40,11 @@ type CartServiceClient interface {
 	GetCartByUserId(ctx context.Context, in *GetCartByUserIdRequest, opts ...grpc.CallOption) (*GetCartByUserIdResponse, error)
 	GetItemsOfCartById(ctx context.Context, in *GetItemsOfCartByIdRequest, opts ...grpc.CallOption) (*GetItemsOfCartByIdResponse, error)
 	DeleteItemFromCart(ctx context.Context, in *DeleteItemFromCartRequest, opts ...grpc.CallOption) (*DeleteItemFromCartResponse, error)
+	GetEtagVersionByUserId(ctx context.Context, in *GetEtagVersionByUserIdRequest, opts ...grpc.CallOption) (*GetEtagVersionByUserIdResponse, error)
+	ChangeEtagVersionByUserId(ctx context.Context, in *ChangeEtagVersionByUserIdRequest, opts ...grpc.CallOption) (*ChangeEtagVersionByUserIdResponse, error)
+	DeleteCart(ctx context.Context, in *DeleteCartRequest, opts ...grpc.CallOption) (*DeleteCartResponse, error)
+	DeleteProductOfCarts(ctx context.Context, in *DeleteProductOfCartsRequest, opts ...grpc.CallOption) (*DeleteProductOfCartsResponse, error)
+	ChangeEtagVersionOfCartsByProductId(ctx context.Context, in *ChangeEtagVersionOfCartsByProductIdRequest, opts ...grpc.CallOption) (*ChangeEtagVersionOfCartsByProductIdResponse, error)
 }
 
 type cartServiceClient struct {
@@ -95,6 +105,56 @@ func (c *cartServiceClient) DeleteItemFromCart(ctx context.Context, in *DeleteIt
 	return out, nil
 }
 
+func (c *cartServiceClient) GetEtagVersionByUserId(ctx context.Context, in *GetEtagVersionByUserIdRequest, opts ...grpc.CallOption) (*GetEtagVersionByUserIdResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetEtagVersionByUserIdResponse)
+	err := c.cc.Invoke(ctx, CartService_GetEtagVersionByUserId_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cartServiceClient) ChangeEtagVersionByUserId(ctx context.Context, in *ChangeEtagVersionByUserIdRequest, opts ...grpc.CallOption) (*ChangeEtagVersionByUserIdResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ChangeEtagVersionByUserIdResponse)
+	err := c.cc.Invoke(ctx, CartService_ChangeEtagVersionByUserId_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cartServiceClient) DeleteCart(ctx context.Context, in *DeleteCartRequest, opts ...grpc.CallOption) (*DeleteCartResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteCartResponse)
+	err := c.cc.Invoke(ctx, CartService_DeleteCart_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cartServiceClient) DeleteProductOfCarts(ctx context.Context, in *DeleteProductOfCartsRequest, opts ...grpc.CallOption) (*DeleteProductOfCartsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteProductOfCartsResponse)
+	err := c.cc.Invoke(ctx, CartService_DeleteProductOfCarts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cartServiceClient) ChangeEtagVersionOfCartsByProductId(ctx context.Context, in *ChangeEtagVersionOfCartsByProductIdRequest, opts ...grpc.CallOption) (*ChangeEtagVersionOfCartsByProductIdResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ChangeEtagVersionOfCartsByProductIdResponse)
+	err := c.cc.Invoke(ctx, CartService_ChangeEtagVersionOfCartsByProductId_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CartServiceServer is the server API for CartService service.
 // All implementations must embed UnimplementedCartServiceServer
 // for forward compatibility.
@@ -104,6 +164,11 @@ type CartServiceServer interface {
 	GetCartByUserId(context.Context, *GetCartByUserIdRequest) (*GetCartByUserIdResponse, error)
 	GetItemsOfCartById(context.Context, *GetItemsOfCartByIdRequest) (*GetItemsOfCartByIdResponse, error)
 	DeleteItemFromCart(context.Context, *DeleteItemFromCartRequest) (*DeleteItemFromCartResponse, error)
+	GetEtagVersionByUserId(context.Context, *GetEtagVersionByUserIdRequest) (*GetEtagVersionByUserIdResponse, error)
+	ChangeEtagVersionByUserId(context.Context, *ChangeEtagVersionByUserIdRequest) (*ChangeEtagVersionByUserIdResponse, error)
+	DeleteCart(context.Context, *DeleteCartRequest) (*DeleteCartResponse, error)
+	DeleteProductOfCarts(context.Context, *DeleteProductOfCartsRequest) (*DeleteProductOfCartsResponse, error)
+	ChangeEtagVersionOfCartsByProductId(context.Context, *ChangeEtagVersionOfCartsByProductIdRequest) (*ChangeEtagVersionOfCartsByProductIdResponse, error)
 	mustEmbedUnimplementedCartServiceServer()
 }
 
@@ -128,6 +193,21 @@ func (UnimplementedCartServiceServer) GetItemsOfCartById(context.Context, *GetIt
 }
 func (UnimplementedCartServiceServer) DeleteItemFromCart(context.Context, *DeleteItemFromCartRequest) (*DeleteItemFromCartResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteItemFromCart not implemented")
+}
+func (UnimplementedCartServiceServer) GetEtagVersionByUserId(context.Context, *GetEtagVersionByUserIdRequest) (*GetEtagVersionByUserIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEtagVersionByUserId not implemented")
+}
+func (UnimplementedCartServiceServer) ChangeEtagVersionByUserId(context.Context, *ChangeEtagVersionByUserIdRequest) (*ChangeEtagVersionByUserIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeEtagVersionByUserId not implemented")
+}
+func (UnimplementedCartServiceServer) DeleteCart(context.Context, *DeleteCartRequest) (*DeleteCartResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCart not implemented")
+}
+func (UnimplementedCartServiceServer) DeleteProductOfCarts(context.Context, *DeleteProductOfCartsRequest) (*DeleteProductOfCartsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProductOfCarts not implemented")
+}
+func (UnimplementedCartServiceServer) ChangeEtagVersionOfCartsByProductId(context.Context, *ChangeEtagVersionOfCartsByProductIdRequest) (*ChangeEtagVersionOfCartsByProductIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeEtagVersionOfCartsByProductId not implemented")
 }
 func (UnimplementedCartServiceServer) mustEmbedUnimplementedCartServiceServer() {}
 func (UnimplementedCartServiceServer) testEmbeddedByValue()                     {}
@@ -240,6 +320,96 @@ func _CartService_DeleteItemFromCart_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CartService_GetEtagVersionByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEtagVersionByUserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CartServiceServer).GetEtagVersionByUserId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CartService_GetEtagVersionByUserId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CartServiceServer).GetEtagVersionByUserId(ctx, req.(*GetEtagVersionByUserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CartService_ChangeEtagVersionByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangeEtagVersionByUserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CartServiceServer).ChangeEtagVersionByUserId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CartService_ChangeEtagVersionByUserId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CartServiceServer).ChangeEtagVersionByUserId(ctx, req.(*ChangeEtagVersionByUserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CartService_DeleteCart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCartRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CartServiceServer).DeleteCart(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CartService_DeleteCart_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CartServiceServer).DeleteCart(ctx, req.(*DeleteCartRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CartService_DeleteProductOfCarts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProductOfCartsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CartServiceServer).DeleteProductOfCarts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CartService_DeleteProductOfCarts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CartServiceServer).DeleteProductOfCarts(ctx, req.(*DeleteProductOfCartsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CartService_ChangeEtagVersionOfCartsByProductId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangeEtagVersionOfCartsByProductIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CartServiceServer).ChangeEtagVersionOfCartsByProductId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CartService_ChangeEtagVersionOfCartsByProductId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CartServiceServer).ChangeEtagVersionOfCartsByProductId(ctx, req.(*ChangeEtagVersionOfCartsByProductIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CartService_ServiceDesc is the grpc.ServiceDesc for CartService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +436,26 @@ var CartService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteItemFromCart",
 			Handler:    _CartService_DeleteItemFromCart_Handler,
+		},
+		{
+			MethodName: "GetEtagVersionByUserId",
+			Handler:    _CartService_GetEtagVersionByUserId_Handler,
+		},
+		{
+			MethodName: "ChangeEtagVersionByUserId",
+			Handler:    _CartService_ChangeEtagVersionByUserId_Handler,
+		},
+		{
+			MethodName: "DeleteCart",
+			Handler:    _CartService_DeleteCart_Handler,
+		},
+		{
+			MethodName: "DeleteProductOfCarts",
+			Handler:    _CartService_DeleteProductOfCarts_Handler,
+		},
+		{
+			MethodName: "ChangeEtagVersionOfCartsByProductId",
+			Handler:    _CartService_ChangeEtagVersionOfCartsByProductId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

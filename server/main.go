@@ -75,6 +75,54 @@ func (s *Server) DeleteItemFromCart(ctx context.Context, req *pb.DeleteItemFromC
 	return &pb.DeleteItemFromCartResponse{DeletedProduct: &pb.Product{Id: req.ProductId}}, nil
 }
 
+func (s *Server) GetEtagVersionByUserId(ctx context.Context, req *pb.GetEtagVersionByUserIdRequest) (*pb.GetEtagVersionByUserIdResponse, error) {
+	version, err := s.CartStore.GetEtagVersionByUserId(int(req.GetUserId()))
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return &pb.GetEtagVersionByUserIdResponse{Version: int64(version)}, nil
+}
+
+func (s *Server) ChangeEtagVersionByUserId(ctx context.Context, req *pb.ChangeEtagVersionByUserIdRequest) (*pb.ChangeEtagVersionByUserIdResponse, error) {
+	changedVersion, err := s.CartStore.ChangeEtagVersionByUserId(int(req.GetUserId()))
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return &pb.ChangeEtagVersionByUserIdResponse{IsChanged: true, ChangedVersion: int64(changedVersion)}, nil
+}
+
+func (s *Server) DeleteCart(ctx context.Context, req *pb.DeleteCartRequest) (*pb.DeleteCartResponse, error) {
+	deletedCart, err := s.CartStore.DeleteCart(int(req.GetUserId()))
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return &pb.DeleteCartResponse{DeletedCart: &pb.Cart{Id: int32(deletedCart.Id), UserId: int32(deletedCart.User_id)}}, nil
+}
+
+func (s *Server) DeleteProductOfCarts(ctx context.Context, req *pb.DeleteProductOfCartsRequest) (*pb.DeleteProductOfCartsResponse, error) {
+	err := s.CartStore.DeleteProductOfCarts(int(req.GetProductId()))
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+	return &pb.DeleteProductOfCartsResponse{ProductId: req.GetProductId()}, nil
+}
+
+func (s *Server) ChangeEtagVersionOfCartsByProductId(ctx context.Context, req *pb.ChangeEtagVersionOfCartsByProductIdRequest) (*pb.ChangeEtagVersionOfCartsByProductIdResponse, error) {
+	err := s.CartStore.ChangeEtagVersionByProductId(int(req.ProductId))
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+	return &pb.ChangeEtagVersionOfCartsByProductIdResponse{IsChanged: true}, nil
+}
+
 func main() {
 	cfg, err := config.LoadConfig()
 	if err != nil {
