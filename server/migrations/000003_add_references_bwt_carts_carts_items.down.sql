@@ -1,0 +1,2 @@
+ALTER TABLE cart_items
+DROP CONSTRAINT IF EXISTS fk_carts;
