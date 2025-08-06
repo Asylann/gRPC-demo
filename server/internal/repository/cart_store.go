@@ -62,7 +62,13 @@ func NewCartStore() (CartStore, error) {
 	}
 
 	cartstore.deleteItemFromCart, err = db.PreparexContext(context.Background(),
-		`DELETE FROM cart_items WHERE cart_id=$1 and product_id=$2`)
+		`DELETE FROM cart_items 
+       		   WHERE ctid IN (
+       		       SELECT ctid
+       		       FROM cart_items
+       		       WHERE cart_id=$1 and product_id=$2
+       		       LIMIT 1 
+       		       );`)
 	if err != nil {
 		log.Println(err.Error())
 		return CartStore{}, err

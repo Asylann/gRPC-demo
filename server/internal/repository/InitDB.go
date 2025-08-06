@@ -20,6 +20,8 @@ func InitDB(config config.Config) *sqlx.DB {
 		log.Fatal(err.Error())
 	}
 
+	/*RunMigration(db)*/
+
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
 	db.SetConnMaxLifetime(4 * time.Minute)
