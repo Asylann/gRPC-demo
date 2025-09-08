@@ -12,6 +12,13 @@ type sqlCartStore interface {
 	GetCartByUserId(ctx context.Context, id int) (models.Cart, error)
 	CreateCart(ctx context.Context, userId int) error
 	AddToCart(ctx context.Context, cartId int, product models.Product) error
+	GetProductsOfCartById(cartId int) ([]int, error)
+	DeleteItemFromCart(cartId, product_id int) error
+	GetEtagVersionByUserId(userId int) (int, error)
+	ChangeEtagVersionByUserId(userId int) (int, error)
+	DeleteCart(user_id int) (models.Cart, error)
+	DeleteProductOfCarts(productId int) error
+	ChangeEtagVersionByProductId(productId int) error
 }
 
 type CartStore struct {

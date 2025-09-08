@@ -6,6 +6,7 @@ import (
 	"github.com/Asylann/gRPC_Demo/server/internal/config"
 	"github.com/Asylann/gRPC_Demo/server/internal/models"
 	"github.com/Asylann/gRPC_Demo/server/internal/repository"
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -124,6 +125,10 @@ func (s *Server) ChangeEtagVersionOfCartsByProductId(ctx context.Context, req *p
 }
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("No .env variables are loaded")
+		return
+	}
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatal(err.Error())
