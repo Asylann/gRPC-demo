@@ -1,4 +1,4 @@
-module github.com/Asylann/gRPC-Demo
+module github.com/Asylann/grpc-demo
 
 go 1.24
 
